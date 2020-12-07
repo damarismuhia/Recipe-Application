@@ -46,9 +46,7 @@ android {
 
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    def nav_version = "2.3.1"
-
-    def lottieVersion = "3.4.0"
+    def nav_version = "2.3.2"
 
     def glide = "4.11.0"
     def retrofit = "2.9.0"
