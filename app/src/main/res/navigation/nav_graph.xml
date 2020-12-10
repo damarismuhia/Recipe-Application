@@ -18,5 +18,22 @@
         android:id="@+id/detailFragment"
         android:name="com.example.recipeapplication.ui.fragments.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="imageUrl"
+            app:argType="string"
+            android:defaultValue="noImageUrl" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="noTitle" />
+        <argument
+            android:name="publisher"
+            app:argType="string"
+            android:defaultValue="noPublisher" />
+        <argument
+            android:name="sourceUrl"
+            app:argType="string"
+            android:defaultValue="noSourceUrl" />
+    </fragment>
 </navigation>

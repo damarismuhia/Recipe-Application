@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,7 @@ class HomeFragment : Fragment() {
 
     private var viewModelAdapter: RecipeAdapter? = null
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.allRecipes.observe(viewLifecycleOwner, { recipe ->
@@ -40,6 +42,7 @@ class HomeFragment : Fragment() {
             }
         })
     }
+
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -56,8 +59,7 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         binding.fragmentRecipeViewModel = viewModel
-        
-        binding.numberOfRecipes.text = "Number of recipes : ${viewModel.allRecipes.value?.count}"
+
 
         viewModelAdapter = RecipeAdapter(RecipeClick {
             Toast.makeText(requireContext(), it.title, Toast.LENGTH_SHORT).show()
@@ -73,6 +75,15 @@ class HomeFragment : Fragment() {
              * Navigate with arguments
              * */
 
+            val passDataToDetailFragment = HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                imageUrl,
+                title,
+                publisher,
+                sourceUrl
+            )
+
+            view?.findNavController()?.navigate(passDataToDetailFragment)
+
         })
 
         binding.root.findViewById<RecyclerView>(R.id.recyclerView).apply {
@@ -80,10 +91,15 @@ class HomeFragment : Fragment() {
                 GridLayoutManager(requireContext(), 2, LinearLayoutManager.VERTICAL, false)
             layoutManager = gridLayoutManager
             adapter = viewModelAdapter
+
         }
+
+        binding.numberOfRecipes.text = "Number of Recipes: ${viewModel.allRecipes.value?.count}"
+
 
         return binding.root
     }
+
 
 
 }

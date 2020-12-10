@@ -8,53 +8,13 @@ import kotlinx.coroutines.launch
 import retrofit2.await
 import java.io.IOException
 
-//
-//class RecipesViewModel(application: Application) : AndroidViewModel(application) {
-//    private val context = getApplication<Application>().applicationContext
-//
-//    /**
-//     *  LiveData gives us updated data when they change.
-//     * */
-//    private var allRecipes: MutableLiveData<Recipe> = MutableLiveData()
-//
-//    private var adapter: RecipeAdapter
-//
-//    init {
-//        fetchMurdersInCoroutine()
-//        adapter = RecipeAdapter()
-//    }
-//
-//    fun getMyAdapter(): RecipeAdapter {
-//        return adapter
-//    }
-//
-//    fun setAdapterData(data: List<RecipeX>) {
-//        adapter.apply {
-//            setDataList(data)
-//            notifyDataSetChanged()
-//        }
-//    }
-//
-//    fun getAllRecipesData(): MutableLiveData<Recipe> {
-//        return allRecipes
-//    }
-//
-//    private fun fetchMurdersInCoroutine() = viewModelScope.launch {
-//        try {
-//            val fetchingMurders = RetrofitBuilder.apiService.getAllRecipes().await()
-//            allRecipes.postValue(fetchingMurders)
-//        } catch (networkError: IOException) {
-//            allRecipes.postValue(null)
-//        }
-//    }
-//}
-
 class RecipesViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _allRecipes = MutableLiveData<Recipe>()
 
     val allRecipes: LiveData<Recipe>
         get() = _allRecipes
+
 
     private fun refreshDataFromNetwork() {
         viewModelScope.launch {
