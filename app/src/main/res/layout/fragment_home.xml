@@ -30,7 +30,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:setAdapter="@{fragmentRecipeViewModel.getMyAdapter()}"
+            tools:listitem="@layout/grid_item_layout"
             />
     </LinearLayout>
 </layout>

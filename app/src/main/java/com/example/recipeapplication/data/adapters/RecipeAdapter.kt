@@ -5,54 +5,63 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.recipeapplication.R
 import com.example.recipeapplication.data.models.Recipe
 import com.example.recipeapplication.data.models.RecipeX
+import com.example.recipeapplication.databinding.GridItemLayoutBinding
+import com.example.recipeapplication.ui.fragments.RecipeClick
 import kotlinx.android.synthetic.main.grid_item_layout.view.*
 
 
-class RecipeAdapter :
-    RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
-    private var items = Recipe(0, ArrayList())
+class RecipeAdapter(val callback: RecipeClick) :
+    RecyclerView.Adapter<RecipeViewHolder>() {
 
-    fun setDataList(items: List<RecipeX>) {
-        this.items.recipes = items
-    }
+    /**
+     * The murder that our Adapter will show
+     */
+    var recipe: List<RecipeX> = emptyList()
+        set(value) {
+            field = value
+            /**
+             * TO DO() update data using paging library
+             * */
+            notifyDataSetChanged()
+        }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = RecipeViewHolder(
-        LayoutInflater.from(parent.context).inflate(
-            R.layout.grid_item_layout,
+    /**
+     * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
+     * an item.
+     */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
+        val withDataBinding: GridItemLayoutBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            RecipeViewHolder.LAYOUT,
             parent,
             false
         )
-    )
-
-
-    override fun getItemCount() = items.recipes.size
-
-    @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
-
-        val recipes = items.recipes[position]
-
-        holder.view.apply {
-            title.text = recipes.title
-        }
-
-        val url = recipes.image_url
-
-        Glide
-            .with(holder.view.context)
-            .load(url)
-            .centerCrop()
-            .into(holder.view.imageUrl)
-
-        holder.view.setOnClickListener {
-            Toast.makeText(holder.view.context, recipes.title, Toast.LENGTH_SHORT).show()
-        }
+        return RecipeViewHolder(withDataBinding)
     }
 
-    class RecipeViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+
+    override fun getItemCount() = recipe.size
+
+    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
+        holder.viewDataBinding.also {
+            it.recipe = recipe[position]
+            it.recipeCallBack = callback
+        }
+    }
 }
+
+    class RecipeViewHolder(val viewDataBinding: GridItemLayoutBinding) :
+        RecyclerView.ViewHolder(viewDataBinding.root) {
+        companion object {
+            @LayoutRes
+            val LAYOUT = R.layout.grid_item_layout
+        }
+    }
