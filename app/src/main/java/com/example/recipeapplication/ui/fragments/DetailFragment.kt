@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.recipeapplication.R
+import com.example.recipeapplication.databinding.FragmentDetailBinding
 
 class DetailFragment : Fragment() {
+
+    lateinit var binding: FragmentDetailBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
